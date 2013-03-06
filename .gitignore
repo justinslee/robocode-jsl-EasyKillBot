@@ -11,6 +11,7 @@ tmp/
 *~.nib
 local.properties
 
+robots/
 .settings/
 .loadpath
 HOME/
