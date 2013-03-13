@@ -1,4 +1,4 @@
-package jsl;
+package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,22 +9,22 @@ import robocode.control.events.TurnEndedEvent;
 
 /**
  * Illustrates JUnit testing of Robocode robots.
- * This test simply verifies that EasyKillBot always beats Corners.
+ * This test simply verifies that EasyKillBot always beats Crazy.
  * 
  * Also illustrates the overriding of a set of methods from RobotTestBed to show how the testing
  * behavior can be customized and controlled. 
  * 
  * @author Philip Johnson
  */
-public class TestEasyKillBotVsCorners extends RobotTestBed {
+public class TestEasyKillBotVsCrazy extends RobotTestBed {
 
   /**
-   * Specifies that Corners and EasyKillBot are to be matched up in this test case.
+   * Specifies that Crazy and EasyKillBot are to be matched up in this test case.
    * @return The comma-delimited list of robots in this match.
    */
   @Override
   public String getRobotNames() {
-    return "sample.Corners,jsl.EasyKillBot";
+    return "sample.Crazy,jsl.EasyKillBot";
   }
   
   /**
@@ -37,7 +37,7 @@ public class TestEasyKillBotVsCorners extends RobotTestBed {
   }
   
   /**
-   * The actual test, which asserts that EasyKillBot has won every round against Corners.
+   * The actual test, which asserts that EasyKillBot has won every round against Crazy.
    * @param event Details about the completed battle.
    */
   @Override
@@ -50,7 +50,7 @@ public class TestEasyKillBotVsCorners extends RobotTestBed {
     assertEquals("Check that results[1] is EasyKillBot", "jsl.EasyKillBot*", robotName);
     
     // Check to make sure EasyKillBot won every round.
-    // assertEquals("Check EasyKillBot winner", getNumRounds(), easyKillBotResults.getFirsts());
+    //assertEquals("Check EasyKillBot winner", getNumRounds(), easyKillBotResults.getFirsts());
     // Check to make sure EasyKillBot won 70%
     assertTrue("Check EasyKillBot wins 70%", easyKillBotResults.getFirsts() >= .7*getNumRounds());
   }

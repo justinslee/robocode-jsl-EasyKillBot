@@ -1,4 +1,4 @@
-package jsl;
+package test;
 
 import static org.junit.Assert.assertTrue;
 import robocode.control.events.BattleCompletedEvent;

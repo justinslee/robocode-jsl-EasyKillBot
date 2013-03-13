@@ -1,6 +1,5 @@
-package jsl;
+package test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import robocode.control.testing.RobotTestBed;
 import robocode.BattleResults;
@@ -9,22 +8,22 @@ import robocode.control.events.TurnEndedEvent;
 
 /**
  * Illustrates JUnit testing of Robocode robots.
- * This test simply verifies that EasyKillBot always beats SpinBot.
+ * This test simply verifies that EasyKillBot always beats Walls.
  * 
  * Also illustrates the overriding of a set of methods from RobotTestBed to show how the testing
  * behavior can be customized and controlled. 
  * 
  * @author Philip Johnson
  */
-public class TestEasyKillBotVsSpinBot extends RobotTestBed {
+public class TestEasyKillBotVsWalls extends RobotTestBed {
 
   /**
-   * Specifies that SpinBot and EasyKillBot are to be matched up in this test case.
+   * Specifies that Walls and EasyKillBot are to be matched up in this test case.
    * @return The comma-delimited list of robots in this match.
    */
   @Override
   public String getRobotNames() {
-    return "sample.SpinBot,jsl.EasyKillBot";
+    return "sample.Walls,jsl.EasyKillBot";
   }
   
   /**
@@ -33,11 +32,11 @@ public class TestEasyKillBotVsSpinBot extends RobotTestBed {
    */
   @Override
   public int getNumRounds() {
-    return 20;
+    return 50;
   }
   
   /**
-   * The actual test, which asserts that EasyKillBot has won every round against SpinBot.
+   * The actual test, which asserts that EasyKillBot has won every round against Walls.
    * @param event Details about the completed battle.
    */
   @Override
@@ -46,14 +45,9 @@ public class TestEasyKillBotVsSpinBot extends RobotTestBed {
     BattleResults[] battleResults = event.getIndexedResults();
     // Sanity check that results[0] is EasyKillBot.
     BattleResults easyKillBotResults = battleResults[0];
-    String robotName = easyKillBotResults.getTeamLeaderName();
-    assertEquals("Check that results[1] is EasyKillBot", "jsl.EasyKillBot*", robotName);
-    
-    // Check to make sure EasyKillBot won every round.
-    //assertEquals("Check EasyKillBot winner", getNumRounds(), easyKillBotResults.getFirsts());
+
     // Check to make sure EasyKillBot won 70%
-    System.out.println(easyKillBotResults.getFirsts());
-    assertTrue("Check EasyKillBot wins 70%", easyKillBotResults.getFirsts() >= .7*getNumRounds());
+    assertTrue("Check EasyKillBot wins 30%", easyKillBotResults.getFirsts() >= .3*getNumRounds());
   }
   
   /**
@@ -125,5 +119,5 @@ public class TestEasyKillBotVsSpinBot extends RobotTestBed {
   protected void runTeardown() {
     // Default does nothing.
   }
-  
+
 }

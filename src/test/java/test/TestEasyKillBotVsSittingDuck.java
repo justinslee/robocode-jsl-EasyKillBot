@@ -1,4 +1,4 @@
-package jsl;
+package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,22 +9,22 @@ import robocode.control.events.TurnEndedEvent;
 
 /**
  * Illustrates JUnit testing of Robocode robots.
- * This test simply verifies that EasyKillBot always beats Fire.
+ * This test simply verifies that EasyKillBot always beats SittingDuck.
  * 
  * Also illustrates the overriding of a set of methods from RobotTestBed to show how the testing
  * behavior can be customized and controlled. 
  * 
  * @author Philip Johnson
  */
-public class TestEasyKillBotVsFire extends RobotTestBed {
+public class TestEasyKillBotVsSittingDuck extends RobotTestBed {
 
   /**
-   * Specifies that Fire and EasyKillBot are to be matched up in this test case.
+   * Specifies that SittingDuck and EasyKillBot are to be matched up in this test case.
    * @return The comma-delimited list of robots in this match.
    */
   @Override
   public String getRobotNames() {
-    return "sample.Fire,jsl.EasyKillBot";
+    return "sample.SittingDuck,jsl.EasyKillBot";
   }
   
   /**
@@ -37,7 +37,7 @@ public class TestEasyKillBotVsFire extends RobotTestBed {
   }
   
   /**
-   * The actual test, which asserts that EasyKillBot has won every round against Fire.
+   * The actual test, which asserts that EasyKillBot has won every round against SittingDuck.
    * @param event Details about the completed battle.
    */
   @Override

@@ -1,4 +1,4 @@
-package jsl;
+package test;
 
 import static org.junit.Assert.assertTrue;
 import robocode.control.events.BattleCompletedEvent;
@@ -7,8 +7,8 @@ import robocode.control.snapshot.IBulletSnapshot;
 import robocode.control.testing.RobotTestBed;
 
 /**
- * This tests for variability in bullet power administered by the robot EasyKillBot.
- *
+ * This tests for variability in bullet power 
+ * administered by the robot EasyKillBot.
  * @author Philip Johnson
  */
 public class TestEasyKillBotFiring extends RobotTestBed {

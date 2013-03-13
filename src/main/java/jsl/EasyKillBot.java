@@ -1,21 +1,15 @@
 package jsl;
 
-import java.awt.geom.Point2D;
 import robocode.AdvancedRobot;
-import robocode.HitWallEvent;
 import robocode.Rules;
 import robocode.ScannedRobotEvent;
 
 /**
- * <code>EasyKillBotV2</code> is a competitive Bot for Robocode
- * that is in the building phase.
- * Wins 80-100% against all included Robots, except two robots.
- * Loses to Walls Robot 75% of the time. Ties 50% with Corners Robot.
- *
+ * <code>EasyKillBotV2</code> is a competitive Bot for Robocode.
  * @author Justin Lee
- * @version 1.1
+ * @version 1.2
  */
-public class EasyKillBot extends AdvancedRobot {
+public class EasyKillBot extends AdvancedRobot { //NOPMD CC-13
 
 //Used for weight calculations of circle of field
 //private final double fieldRadius = .8;
@@ -36,13 +30,21 @@ private static final int TURNRADAR = 5;
  */
 private static final int AHEADDISTANCE = 100;
 /**
+ * Angle of 90 degrees(Magic Number).
+ */
+private static final int A90 = 90;
+/**
+ * Angle of 180 degrees(Magic Number).
+ */
+private static final int A180 = 180;
+/**
+ * Angle of 270 degrees(Magic Number).
+ */
+private static final int A270 = 270;
+/**
  * Angle of 360 degrees(Magic Number).
  */
-private static final int CIRCLEANGLE = 360;
-/**
- * Angle of 450 degrees(Magic Number).
- */
-private static final int MIDANGLE = 450;
+private static final int A360 = 360;
 /**
  * Maximum range angle to fire.
  */
@@ -60,35 +62,50 @@ private static final int FIREMEDIUM = 300;
  */
 private static final int FIRESHORT = 200;
 /**
+ * Used to reference max to wait.
+ */
+private static final int WAITTURNS = 400;
+/**
+ * Maximum range for firing.
+ */
+private static final int MAXDISTANCE = 175;
+/**
+ * Minimum range for firing.
+ */
+private static final int MINDISTANCE = 0;
+/**
+ * Minimum wall buffer.
+ */
+private static final int WALL = 50;
+
+/**
  * Used to store and determine enemy information.
  */
-private EnemyRobot enemyRobot;
+private ScannedRobotEvent enemyRobot;  //NOPMD
 
 /**
  * Used to determine the gun angle.
  */
-private double gunAngle = 0;
+private double gunAngle = 0; //NOPMD
 /**
  * Used to determine the radar angle.
  */
-private double radarAngle = 0;
-//private double turnAngle = 0;
-//private double aheadDistance = 0;
+private double radarAngle = 0; //NOPMD
+
 /**
  * Used to determine the number of turns since radar update.
  */
-private double turnCounter = 0;
+private double turnCounter = 0; //NOPMD
 /**
  * Used to determine the enemy tracked.
  */
-private boolean trackingEnemy = false;
+private boolean trackingEnemy = false; //NOPMD
 
   /**
    * Default Constructor used to initialize <code>EnemyRobot</code>
    * object class.
    */
-  public EasyKillBot() {
-    enemyRobot = new EnemyRobot();
+  public EasyKillBot() { //NOPMD
   }
 
   /**
@@ -97,15 +114,9 @@ private boolean trackingEnemy = false;
    */
   @Override
   public final void run() {
-    // Determines the radius the robot is allowed to travel.
-//    double maxRadius = (getBattleFieldWidth()>= getBattleFieldHeight()) ?
-//                         getBattleFieldHeight()/2*fieldRadius
-//                           : getBattleFieldWidth()/2*fieldRadius;
+
     // Make radar turn independently from gun turret
     setAdjustRadarForGunTurn(true);
-
-    moveToPoint(new Point2D.Double(getBattleFieldWidth() / 2,
-                                     getBattleFieldHeight() / 2));
 
     do {
         // Sets robots actions before next execute cycle.
@@ -140,22 +151,11 @@ private boolean trackingEnemy = false;
    */
   public final void setTrackedRadar() {
 
-    if (radarAngle <= CIRCLEANGLE / 2) {
+    if (radarAngle <= A360 / 2) {
       setTurnRadarRight(radarAngle);
     } else {
-      setTurnRadarLeft(CIRCLEANGLE - radarAngle);
+      setTurnRadarLeft(A360 - radarAngle);
     }
-  }
-
-
-  /**
-   * Method <code>onHitWall</code> has an action based on event hitting wall.
-   * @param event has wall event
-   */
-  @Override
-  public final void onHitWall(final HitWallEvent event) {
-    moveToPoint(new Point2D.Double(getBattleFieldWidth() / 2,
-                                    getBattleFieldHeight() / 2));
   }
 
   /**
@@ -163,7 +163,7 @@ private boolean trackingEnemy = false;
    */
   public final void setRobotGun() {
     gunAngle -= TURNANGLE / 2;
-    if (gunAngle <= CIRCLEANGLE / 2) {
+    if (gunAngle <= A360 / 2) {
       setTurnGunRight(gunAngle);
     } else {
       setTurnGunLeft(gunAngle);
@@ -175,8 +175,20 @@ private boolean trackingEnemy = false;
    * portion of the robot.
    * Currently travels in a circular motion.
    */
-  public final void setRobotMove() {
+  public final void setRobotMove() { //NOPMD Cyclomatic complexity - 13
+
     setAhead(AHEADDISTANCE);
+    // Avoiding walls
+    if (getX() < WALL
+        && getHeading() >= A180 && getHeading() <= A360
+        || getX() > getBattleFieldWidth() - WALL
+            && getHeading() >= 0 && getHeading() <= A180
+        || getY() < WALL
+            && getHeading() >= A90 && getHeading() <= A270
+        || getY() > getBattleFieldHeight() - WALL
+            && (getHeading() >= A270 || getHeading() <= A90)) {
+      stop();
+    }
     setTurnRight(TURNANGLE);
   }
 
@@ -184,24 +196,30 @@ private boolean trackingEnemy = false;
    * Method <code>setRobotFire</code> sets action to fire at a
    * robot in range and power is proportional to distance.
    */
-  public final void setRobotFire() {
+  public final void setRobotFire() { //NOPMD
 
-    if ((enemyRobot.getLastEvent()) != null && trackingEnemy
-           && (gunAngle <= ACCURACYANGLE
-             || gunAngle >= CIRCLEANGLE - ACCURACYANGLE)) {
+    double distance;
 
-      double distance = enemyRobot.getLastEvent().getDistance();
+    if (gunAngle <= ACCURACYANGLE || gunAngle >= A360 - ACCURACYANGLE
+         && trackingEnemy) {
 
-      if (distance >= FIRELONG) {
+      if (!(enemyRobot == null)) {  //NOPMD
+        distance = enemyRobot.getDistance();
+        if (distance >= MINDISTANCE && distance <= MAXDISTANCE
+            || getTime() >= WAITTURNS) {
 
-        setFire(1);
-      } else if (distance >= FIRESHORT) {
+          if (distance >= FIRELONG) {
 
-        setFire(1 + ((distance - FIRESHORT) / FIREMEDIUM)
-                  * (Rules.MAX_BULLET_POWER - 1));
-      } else {
+            setFire(1);
+          } else if (distance >= FIRESHORT) {
 
-        setFire(Rules.MAX_BULLET_POWER);
+            setFire(1 + ((distance - FIRESHORT) / FIREMEDIUM)
+                   * (Rules.MAX_BULLET_POWER - 1));
+          } else {
+
+            setFire(Rules.MAX_BULLET_POWER);
+          }
+        }
       }
     }
   }
@@ -214,108 +232,17 @@ private boolean trackingEnemy = false;
   @Override
   public final void onScannedRobot(final ScannedRobotEvent event) {
     // Store event for future reference
-    enemyRobot.storeEvent(event);
+    enemyRobot = event; //NOPMD
 
     // Rotate gun and radar to the same target
     // Note: Add 720 then modulo to make result positive
     gunAngle = Math.floor((getHeading() - getGunHeading()
-                + event.getBearing() + 2 * CIRCLEANGLE) % CIRCLEANGLE);
+                + event.getBearing() + 2 * A360) % A360);
     radarAngle = Math.floor((getHeading() - getRadarHeading()
-                  + event.getBearing() + 2 * CIRCLEANGLE) % CIRCLEANGLE);
+                  + event.getBearing() + 2 * A360) % A360);
 
     // Sets time to keep track of turns since last scanned event
     turnCounter = getTime();
   }
 
-  /**
-   * Method <code>moveTo</code> is supposed to move to a point for
-   * turns in sequence. However changing the code for to set has an
-   * interesting side-effect when turns and ahead are are
-   * done at the same time.
-   * @param nextPos position to move to on map
-   */
-  public final void moveToPoint(final Point2D nextPos) {
-
-    double distance, robotAngle, turnAngle;
-
-    Point2D.Double robot = new Point2D.Double(getX(), getY());
-    distance = robot.distance(nextPos);
-    robotAngle = angleConverter(getHeading());
-    turnAngle = angleTan2((nextPos.getY() - robot.getY()),
-                 (nextPos.getX() - robot.getX()));
-    turnAngle = robotAngle - turnAngle;
-
-    while (turnAngle > 0) {
-      if (turnAngle > TURNANGLE) {
-        setTurnRight(TURNANGLE);
-        turnAngle -= TURNANGLE;
-      } else {
-        setTurnRight(turnAngle);
-        turnAngle = 0;
-      }
-      execute();
-    }
-    while (distance > (AHEADDISTANCE)) {
-      setAhead(AHEADDISTANCE);
-      robot = new Point2D.Double(getX(), getY());
-      distance = robot.distance(nextPos);
-      execute();
-    }
-
-  }
-
-  /**
-   * Method <code>distanceFromCircle</code> determines if tank
-   * is inside a circle based at the center of map of given radius.
-   * @param myLocation - Point2D representation of the robot location
-   * @param maxRadius - farthest range allowed.
-   * @return returns distance between closest point of circle
-   * to robot, if robot is in.
-   * circle returns 0.
-   */
-  public final double distanceFromCircle(final Point2D myLocation,
-                                          final double maxRadius) {
-
-    final Point2D.Double center = getCenterPoint();
-    final double distance = myLocation.distance(center);
-
-    if (maxRadius > distance) {
-      return 0;
-    }
-
-    return distance - maxRadius;
-  }
-
-
-  /**
-   * Method <code>centerPoint</code> returns the center
-   * coordinates as a Point2D.Double object.
-   *
-   * @return Point2D.Double representation of center of the battlefield.
-   */
-  public final Point2D.Double getCenterPoint() {
-    return new Point2D.Double(getBattleFieldWidth() / 2,
-                               getBattleFieldHeight() / 2);
-  }
-
-  /**
-   * Method <code>angleTan2()</code> converts two points distances
-   * to an angle.
-   * @param deltaX - X=coordinate difference between two points
-   * @param deltaY - Y-coordinate difference between two points
-   * @return positive angle of Math.tan2
-   */
-  private double angleTan2(final double deltaY, final double deltaX) {
-    return Math.atan2(deltaY, deltaX) * (CIRCLEANGLE / 2) / Math.PI;
-  }
-
-  /**
-   * Method <code>angleTan2()</code> Converts between North
-   * clockwise angle(getHeading()) to Cartesian angle format.
-   * @param angle - angle for conversion
-   * @return positive angle of the other format
-   */
-  private double angleConverter(final double angle) {
-    return ((MIDANGLE - angle) % CIRCLEANGLE);
-  }
 }
