@@ -47,7 +47,7 @@ public class TestEasyKillBotVsWalls extends RobotTestBed {
     BattleResults easyKillBotResults = battleResults[0];
 
     // Check to make sure EasyKillBot won 70%
-    assertTrue("Check EasyKillBot wins 30%", easyKillBotResults.getFirsts() >= .3*getNumRounds());
+    assertTrue("Check EasyKillBot wins 30%", easyKillBotResults.getFirsts() >= .3 * getNumRounds());
   }
   
   /**

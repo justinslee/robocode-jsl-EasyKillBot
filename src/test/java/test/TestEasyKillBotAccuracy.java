@@ -69,12 +69,12 @@ public class TestEasyKillBotAccuracy extends RobotTestBed {
     IBulletSnapshot bullets[] = (event.getTurnSnapshot()).getBullets(); //NOPMD
     
     for (int i = 0; i < bullets.length; i++) {
-      if(bullets[i].getState() == BulletState.HIT_VICTIM) { //NOPMD
-        if(bullets[i].getBulletId() >= 0) { //NOPMD
+      if (bullets[i].getState() == BulletState.HIT_VICTIM) { //NOPMD
+        if (bullets[i].getBulletId() >= 0) { //NOPMD
           bulletHits[bullets[i].getBulletId()] = true; //NOPMD
         }
       }
-      if(bullets[i].getBulletId() > lastElement) { //NOPMD
+      if (bullets[i].getBulletId() > lastElement) { //NOPMD
         lastElement = bullets[i].getBulletId(); //NOPMD
       }
     }
@@ -91,12 +91,12 @@ public class TestEasyKillBotAccuracy extends RobotTestBed {
   public final void onBattleCompleted(BattleCompletedEvent event) {
     
     double hits = 0;
-    for(int i = 0; i <= lastElement; i++) {
-      if(bulletHits[i] == true) {
+    for (int i = 0; i <= lastElement; i++) {
+      if (bulletHits[i]) {
         hits ++;
       }
     }
-    assertTrue("Bullets Hit Accurately", (hits/lastElement) >= firingAccuracy );
+    assertTrue("Bullets Hit Accurately", (hits / lastElement) >= firingAccuracy );
     //assertTrue("foo", false);
   }
 }

@@ -51,21 +51,24 @@ public class TestEasyKillBotAvoidCollisionsWithLessLife extends RobotTestBed {
   public void onTurnEnded (TurnEndedEvent event) {
     
     // Checks each turn to determine if robot hit another robot.
-    IRobotSnapshot robots[]= event.getTurnSnapshot().getRobots();
-    if((robots[0].getName()).compareToIgnoreCase("jsl.EasyKillBot") == 0 
+    IRobotSnapshot robots[] = event.getTurnSnapshot().getRobots();
+    if ((robots[0].getName()).compareToIgnoreCase("jsl.EasyKillBot") == 0 
           || robots[0].getName().compareToIgnoreCase("jsl.EasyKillBot*") == 0) {
-      if(robots[0].getState().isHitRobot() == true) {
-        if(robots[0].getEnergy() < robots[1].getEnergy()) {
+      if (robots[0].getState().isHitRobot()) {
+        if (robots[0].getEnergy() < robots[1].getEnergy()) {
           collisionLess ++;
-        } else {
+        } 
+        else {
           collisionGreater ++;
         }
       }
-    } else {
-      if(robots[1].getState().isHitRobot() == true) {
-        if(robots[1].getEnergy() < robots[0].getEnergy()) {      
+    } 
+    else {
+      if (robots[1].getState().isHitRobot()) {
+        if (robots[1].getEnergy() < robots[0].getEnergy()) {      
           collisionLess ++;
-        } else {
+        } 
+        else {
           collisionGreater ++;
         }
       }      

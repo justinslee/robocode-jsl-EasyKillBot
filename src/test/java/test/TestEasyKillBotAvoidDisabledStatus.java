@@ -48,13 +48,13 @@ public class TestEasyKillBotAvoidDisabledStatus extends RobotTestBed {
   public void onTurnEnded (TurnEndedEvent event) {
     
     // Checks each turn to determine if robot hit a wall.
-    IRobotSnapshot robots[]= event.getTurnSnapshot().getRobots();
-    for(IRobotSnapshot robot: robots) {
-      if((robot.getName()).compareToIgnoreCase("jsl.EasyKillBot") == 0 
-          || robot.getName().compareToIgnoreCase("jsl.EasyKillBot*") == 0) {
-        if(robot.getState().isAlive() == true && robot.getEnergy() <= 0) {
+    IRobotSnapshot robots[] = event.getTurnSnapshot().getRobots();
+    for (IRobotSnapshot robot: robots) {
+      if ((robot.getName().compareToIgnoreCase("jsl.EasyKillBot") == 0 
+          || robot.getName().compareToIgnoreCase("jsl.EasyKillBot*") == 0)
+          && (robot.getState().isAlive() && robot.getEnergy() <= 0)) {
           noDisabledStatus = false;
-        }
+
       }
     }
   }

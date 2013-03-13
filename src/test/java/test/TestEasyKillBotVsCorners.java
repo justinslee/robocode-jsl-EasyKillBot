@@ -18,7 +18,6 @@ import robocode.control.events.TurnEndedEvent;
  * testing behavior can be customized and controlled.
  * @author Philip Johnson
  */
-@SuppressWarnings("PMD")
 public class TestEasyKillBotVsCorners extends RobotTestBed { //NOPMD
   //PMD has issues with "too many lines in javadoc comments"
 /**
@@ -62,8 +61,9 @@ private static final double WINPERCENT = .7;
     // Sanity check that results[0] is EasyKillBot.
     BattleResults easyKillBotResults = battleResults[0];  //NOPMD
     String robotName = easyKillBotResults.getTeamLeaderName(); //NOPMD
+    //robotName = robotName.replace(" [0-9][.][0-9]+", "");
     assertEquals("Check that results[1] is EasyKillBot",
-        "jsl.EasyKillBot*", robotName);
+        "jsl.EasyKillBot 1.1*", robotName);
 
     // Check to make sure EasyKillBot won 70%
     assertTrue("Check EasyKillBot wins 70%",

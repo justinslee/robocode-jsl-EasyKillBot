@@ -140,7 +140,8 @@ private boolean trackingEnemy = false; //NOPMD
     if ((getTime() - turnCounter) >= MAXRADARLOSS) {
       setTurnRadarRight(TURNRADAR);
       trackingEnemy = false;
-    } else {
+    } 
+    else {
       setTrackedRadar();
       trackingEnemy = true;
     }
@@ -153,7 +154,8 @@ private boolean trackingEnemy = false; //NOPMD
 
     if (radarAngle <= A360 / 2) {
       setTurnRadarRight(radarAngle);
-    } else {
+    } 
+    else {
       setTurnRadarLeft(A360 - radarAngle);
     }
   }
@@ -165,7 +167,8 @@ private boolean trackingEnemy = false; //NOPMD
     gunAngle -= TURNANGLE / 2;
     if (gunAngle <= A360 / 2) {
       setTurnGunRight(gunAngle);
-    } else {
+    }
+    else {
       setTurnGunLeft(gunAngle);
     }
   }
@@ -211,11 +214,13 @@ private boolean trackingEnemy = false; //NOPMD
           if (distance >= FIRELONG) {
 
             setFire(1);
-          } else if (distance >= FIRESHORT) {
+          } 
+          else if (distance >= FIRESHORT) {
 
             setFire(1 + ((distance - FIRESHORT) / FIREMEDIUM)
                    * (Rules.MAX_BULLET_POWER - 1));
-          } else {
+          } 
+          else {
 
             setFire(Rules.MAX_BULLET_POWER);
           }

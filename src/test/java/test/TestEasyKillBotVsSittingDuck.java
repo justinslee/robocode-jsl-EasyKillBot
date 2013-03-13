@@ -47,12 +47,12 @@ public class TestEasyKillBotVsSittingDuck extends RobotTestBed {
     // Sanity check that results[0] is EasyKillBot.
     BattleResults easyKillBotResults = battleResults[0];
     String robotName = easyKillBotResults.getTeamLeaderName();
-    assertEquals("Check that results[1] is EasyKillBot", "jsl.EasyKillBot*", robotName);
-    
+    assertEquals("Check that results[1] is EasyKillBot",
+        "jsl.EasyKillBot 1.1*", robotName);    
     // Check to make sure EasyKillBot won every round.
     //assertEquals("Check EasyKillBot winner", getNumRounds(), easyKillBotResults.getFirsts());
     // Check to make sure EasyKillBot won 70%
-    assertTrue("Check EasyKillBot wins 70%", easyKillBotResults.getFirsts() >= .7*getNumRounds());
+    assertTrue("Check EasyKillBot wins 70%", easyKillBotResults.getFirsts() >= .7 * getNumRounds());
   }
   
   /**

@@ -49,13 +49,13 @@ public class TestEasyKillBotAvoidsWalls extends RobotTestBed {
   public void onTurnEnded (TurnEndedEvent event) {
     
     // Checks each turn to determine if robot hit a wall.
-    IRobotSnapshot robots[]= event.getTurnSnapshot().getRobots();
-    for(IRobotSnapshot robot: robots) {
-      if((robot.getName()).compareToIgnoreCase("jsl.EasyKillBot") == 0 
-          || robot.getName().compareToIgnoreCase("jsl.EasyKillBot*") == 0) {
-        if(robot.getState().isHitWall() == true) {
+    IRobotSnapshot robots[] = event.getTurnSnapshot().getRobots();
+    for (IRobotSnapshot robot: robots) {
+      if ((robot.getName()).compareToIgnoreCase("jsl.EasyKillBot") == 0 
+          || robot.getName().compareToIgnoreCase("jsl.EasyKillBot*") == 0
+          && robot.getState().isHitWall()) {
           noWallsHit = false;
-        }
+
       }
     }
   }
